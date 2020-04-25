@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
-
+import { CovidService } from 'app/services/covid.service';
+declare var $ : any;
+declare interface TableData {
+  headerRow: string[];
+  dataRows: string[][];
+}
 
 @Component({
     selector: 'dashboard-cmp',
@@ -16,7 +21,70 @@ export class DashboardComponent implements OnInit{
   public chartEmail;
   public chartHours;
 
+  public cummulativeData : any;
+  public latestData : any;
+  public loader : boolean;
+  isFetchingStateData : boolean;
+  isFetchingCountryData : boolean;
+  tableHeaders : string[];
+  stateWiseData : any[];
+
+  public tableData1: TableData;
+  
+  prepareTable(data : any[]) {
+    
+    
+
+    let rows = [];
+    data.forEach(element => {
+      rows.push(element.id,element.name,element.confirmed,element.active,element.recovered,element.deaths)
+    })
+    
+  }
+
+  constructor(private covidService : CovidService) {
+    this.tableHeaders = ["S.No","State","Confirmed","Active","Recovered","Deaths"]
+    this.getStatewiseData();
+    this.getCoronaHistory();
+  }
+
+  getStatewiseData() {
+    this.isFetchingStateData = true;
+    this.covidService.getStatewiseCovidData().subscribe(
+      (response) => {
+        this.isFetchingStateData = false;
+        if(response)
+          this.stateWiseData = response["data"]
+      },
+      (err)=> {
+        this.isFetchingStateData = false;
+      })
+  }
+
+  getCoronaHistory() {
+      this.isFetchingCountryData = true;
+    this.covidService.getCountryCovidData().subscribe(
+      (response) => {
+        this.isFetchingCountryData = false;
+        if(response){
+          this.cummulativeData = response["data"];
+          this.latestData = this.cummulativeData[this.cummulativeData.length - 1]
+      }
+    },
+    (err) => {
+      this.isFetchingCountryData = false;
+    }
+    )
+  }
+
+  openFilterModal() {
+    console.log("hi")
+    $("#filterModal").modal('show');
+  }
+
     ngOnInit(){
+
+
       this.chartColor = "#FFFFFF";
 
       this.canvas = document.getElementById("chartHours");
@@ -206,4 +274,6 @@ export class DashboardComponent implements OnInit{
         options: chartOptions
       });
     }
+
+
 }
