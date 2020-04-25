@@ -1,17 +1,60 @@
-<div class="row">
+<div class="d-flex justify-content-center" *ngIf="isFetchingCountryData && isFetchingStateData">
+  <div class="spinner-grow text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div class="row" *ngIf="latestData">
+  <div class="col-11"></div>
+  <div class="col-1" (click)="openFilterModal()">
+    <i class="fa fa-filter" 
+       style="font-size: 28px;color:dodgerblue;cursor: pointer;" 
+       data-toggle="tooltip" title="filter"></i>
+  </div>
+</div>
+
+  <div class="modal right fade" id="filterModal" data-backdrop = "static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <i class="fa fa-map-marker" style = "color: orangered;font-size: 25px;">&nbsp;&nbsp;Country</i>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <div class="modal-body">
+          <p>Anim
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success">Ok</button>  
+        </div>
+      </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+  </div><!-- modal -->
+
+
+<div class="row" *ngIf="latestData">
   <div class="col-lg-3 col-md-6 col-sm-6">
     <div class="card card-stats">
       <div class="card-body ">
         <div class="row">
           <div class="col-5 col-md-4">
             <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-globe text-warning"></i>
+              <i class="nc-icon nc-alert-circle-i text-warning"></i>
             </div>
           </div>
           <div class="col-7 col-md-8">
             <div class="numbers">
-              <p class="card-category">Capacity</p>
-              <p class="card-title">150GB
+              <p class="card-category">Confirmed</p>
+              <p class="card-title">{{latestData.Confirmed}}
                 <p>
             </div>
           </div>
@@ -31,13 +74,13 @@
         <div class="row">
           <div class="col-5 col-md-4">
             <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-money-coins text-success"></i>
+              <i class="nc-icon nc-atom text-success"></i>
             </div>
           </div>
           <div class="col-7 col-md-8">
             <div class="numbers">
-              <p class="card-category">Revenue</p>
-              <p class="card-title">$ 1,345
+              <p class="card-category">Recovered</p>
+              <p class="card-title">{{latestData.Recovered}}
                 <p>
             </div>
           </div>
@@ -57,13 +100,13 @@
         <div class="row">
           <div class="col-5 col-md-4">
             <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-vector text-danger"></i>
+              <i class="nc-icon nc-ambulance text-danger"></i>
             </div>
           </div>
           <div class="col-7 col-md-8">
             <div class="numbers">
-              <p class="card-category">Errors</p>
-              <p class="card-title">23
+              <p class="card-category">Deaths</p>
+              <p class="card-title">{{latestData.Deaths}}
                 <p>
             </div>
           </div>
@@ -77,33 +120,41 @@
       </div>
     </div>
   </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-5 col-md-4">
-            <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-favourite-28 text-primary"></i>
-            </div>
-          </div>
-          <div class="col-7 col-md-8">
-            <div class="numbers">
-              <p class="card-category">Followers</p>
-              <p class="card-title">+45K
-                <p>
-            </div>
-          </div>
-        </div>
+
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Indian States</h4>
       </div>
-      <div class="card-footer ">
-        <hr>
-        <div class="stats">
-          <i class="fa fa-refresh"></i> Update now
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th *ngFor ="let header of tableHeaders">
+                {{header}}
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor = "let statedata of stateWiseData">
+                <td>{{statedata.id}}</td>
+                <td>{{statedata.name}}</td>
+                <td>{{statedata.confirmed}}</td>
+                <td>{{statedata.active}}</td>
+                <td>{{statedata.recovered}}</td>
+                <td>{{statedata.deaths}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
+
 </div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="card ">
