@@ -8,6 +8,7 @@ import { IconsComponent } from '../../pages/icons/icons.component';
 import { MapsComponent } from '../../pages/maps/maps.component';
 import { NotificationsComponent } from '../../pages/notifications/notifications.component';
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
+import { GlobalComponent } from '../../global/global.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -15,5 +16,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'health', component: TableComponent },
     { path: 'buisness', component: TypographyComponent },
     { path: 'technology', component: IconsComponent },
+    { path: 'global', component: GlobalComponent },
 
 ];
