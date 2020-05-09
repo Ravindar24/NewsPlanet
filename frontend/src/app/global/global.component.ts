@@ -9,6 +9,7 @@ import { CovidService } from 'app/services/covid.service';
 export class GlobalComponent implements OnInit {
   isFetchingCountrySummaryData = false;
   countrySummary;
+  activeCases;
   
   
   constructor(private covidService : CovidService) {     
@@ -24,8 +25,9 @@ export class GlobalComponent implements OnInit {
         this.isFetchingCountrySummaryData = false;
         if(response)
           this.countrySummary = response;
-          console.log(response)
-          console.log(this.countrySummary)
+          this.activeCases = this.countrySummary.TotalConfirmed - (this.countrySummary.TotalDeaths + this.countrySummary.TotalRecovered);
+          console.log(this.countrySummary.TotalConfirmed - (this.countrySummary.TotalDeaths + this.countrySummary.TotalRecovered));
+          console.log(this.activeCases);
 
       },
       (err)=> {

@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit{
   isFetchingCountryData : boolean;
   tableHeaders : string[];
   stateWiseData : any[];
+  activeCases;
 
   public tableData1: TableData;
   
@@ -69,6 +70,7 @@ export class DashboardComponent implements OnInit{
         if(response){
           this.cummulativeData = response["data"];
           this.latestData = this.cummulativeData[this.cummulativeData.length - 1]
+          this.activeCases = this.latestData.Confirmed - (this.latestData.Recovered + this.latestData.Deaths)
       }
     },
     (err) => {
