@@ -9,7 +9,8 @@ def get_data():
         response = response.json()
         
         if response["statusCode"] == "200":
-            data = response["response"] 
+            data = response["response"]
+            data = data[0:len(data)-1]
             return data
 
     except requests.RequestException as E:

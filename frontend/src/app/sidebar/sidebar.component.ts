@@ -19,7 +19,6 @@ export const ROUTES: RouteInfo[] = [
     { path: '/technology', title: 'Technology', icon: 'nc-spaceship' },
     { path: '/global', title: 'Global', icon: 'nc-spaceship' },
 
-
 ];
 
 @Component({
