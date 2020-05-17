@@ -15,30 +15,30 @@
 <div class="row" *ngIf="latestData">
   <div class="col-11"></div>
   <div class="col-1" (click)="openFilterModal()">
-    <i class="fa fa-filter" 
-       style="font-size: 28px;color:dodgerblue;cursor: pointer;" 
-       data-toggle="tooltip" title="filter"></i>
+    <i class="fa fa-filter" style="font-size: 28px;color:dodgerblue;cursor: pointer;" data-toggle="tooltip"
+      title="filter"></i>
   </div>
 </div>
 
-  <div class="modal right fade" id="filterModal" data-backdrop = "static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-        <i class="fa fa-map-marker" style = "color: orangered;font-size: 25px;">&nbsp;&nbsp;Country</i>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-  
-        <div class="modal-body">
-          <p>Anim
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-success">Ok</button>  
-        </div>
-      </div><!-- modal-content -->
-    </div><!-- modal-dialog -->
-  </div><!-- modal -->
+<div class="modal right fade" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel2">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <i class="fa fa-map-marker" style="color: orangered;font-size: 25px;">&nbsp;&nbsp;Country</i>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p>Anim
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success">Ok</button>
+      </div>
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal -->
 
 
 <div class="row" *ngIf="latestData">
@@ -55,7 +55,7 @@
             <div class="numbers">
               <p class="card-category">Confirmed</p>
               <p class="card-title">{{latestData.Confirmed}}
-                <p>
+              <p>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@
             <div class="numbers">
               <p class="card-category">Recovered</p>
               <p class="card-title">{{latestData.Recovered}}
-                <p>
+              <p>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
             <div class="numbers">
               <p class="card-category">Deaths</p>
               <p class="card-title">{{latestData.Deaths}}
-                <p>
+              <p>
             </div>
           </div>
         </div>
@@ -133,12 +133,12 @@
         <div class="table-responsive">
           <table class="table">
             <thead class=" text-primary">
-              <th *ngFor ="let header of tableHeaders">
+              <th *ngFor="let header of tableHeaders">
                 {{header}}
               </th>
             </thead>
             <tbody>
-              <tr *ngFor = "let statedata of stateWiseData">
+              <tr *ngFor="let statedata of stateWiseData">
                 <td>{{statedata.id}}</td>
                 <td>{{statedata.name}}</td>
                 <td>{{statedata.confirmed}}</td>
@@ -212,7 +212,7 @@
           <i class="fa fa-circle text-info"></i> Tesla Model S
           <i class="fa fa-circle text-warning"></i> BMW 5 Series
         </div>
-        <hr/>
+        <hr />
         <div class="card-stats">
           <i class="fa fa-check"></i> Data information certified
         </div>
