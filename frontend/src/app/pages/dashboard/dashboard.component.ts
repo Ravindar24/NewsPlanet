@@ -53,8 +53,9 @@ export class DashboardComponent implements OnInit{
     this.covidService.getStatewiseCovidData().subscribe(
       (response) => {
         this.isFetchingStateData = false;
-        if(response)
+        if(response){
           this.stateWiseData = response["data"]
+        }
       },
       (err)=> {
         this.isFetchingStateData = false;

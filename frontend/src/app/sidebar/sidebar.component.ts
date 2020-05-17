@@ -17,7 +17,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/health', title: 'Health', icon: 'nc-briefcase-24' },
     { path: '/buisness', title: 'Buisness', icon: 'nc-bank' },
     { path: '/technology', title: 'Technology', icon: 'nc-spaceship' },
-
+    { path: '/global', title: 'Global', icon: 'nc-spaceship' },
 
 ];
 

@@ -11,3 +11,5 @@ def covid_view():
 def country_covid_history_view():
     data = get_corona_history()
     return ({"data" : data})
+
+    
