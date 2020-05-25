@@ -164,7 +164,8 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let statedata of stateWiseData">
+              <tr *ngFor="let statedata of stateWiseData; index as i">
+                <td>{{i+1}}</td>
                 <td>{{statedata.location}}</td>
                 <td>{{statedata.cases}}</td>
                 <td>{{statedata.active}}</td>

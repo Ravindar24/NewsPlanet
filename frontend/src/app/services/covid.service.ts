@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { stateWiseCovidUrl, countryCovidUrl, countrySummary } from 'app/app.urls';
+import { stateWiseCovidUrl, countryCovidUrl, countrySummary, countryWiseCovidUrl } from 'app/app.urls';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +21,9 @@ export class CovidService {
 
   getCountryCovideData() {
     return this.http.get(countrySummary);
+  }
+
+  getCountryWiseDetailedCovideData() {
+    return this.http.get(countryWiseCovidUrl);
   }
 }

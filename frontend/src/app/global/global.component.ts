@@ -14,12 +14,16 @@ export class GlobalComponent implements OnInit {
   public canvas: any;
   public ctx;
   public globalCovidChart;
-
-
+  isFetchingCountryData: boolean;
+  tableHeaders: string[];
+  countryWiseData: any[];
+  
 
 
   constructor(private covidService: CovidService) {
     this.getCountrySummary();
+    this.tableHeaders = ["S.No", "State", "Confirmed", "Recovered", "Deaths"]
+    this.getCountrywiseDetailedData();
   }
 
   ngOnInit(): void {
@@ -110,6 +114,20 @@ export class GlobalComponent implements OnInit {
       }
     });
 
+  }
+
+  getCountrywiseDetailedData() {
+    this.isFetchingCountryData = true;
+    this.covidService.getCountryWiseDetailedCovideData().subscribe(
+      (response) => {
+        this.isFetchingCountryData = false;
+        if (response) {
+          this.countryWiseData = response["data"]
+        }
+      },
+      (err) => {
+        this.isFetchingCountryData = false;
+      })
   }
 
 }

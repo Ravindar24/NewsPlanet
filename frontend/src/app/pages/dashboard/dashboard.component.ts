@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
   }
 
   constructor(private covidService: CovidService) {
-    this.tableHeaders = ["State", "Confirmed", "Active", "Recovered", "Deaths"]
+    this.tableHeaders = ["S.No", "State", "Confirmed", "Active", "Recovered", "Deaths"]
     this.getStatewiseData();
     this.getCoronaHistory();
   }
