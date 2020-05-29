@@ -9,7 +9,6 @@ from newsapp.endpoints import INDIA_STATE_WISE_URL,API_KEY_HEADERS,INDIA_COVID_H
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 CACHE_STATE_DATA = []
 CACHE_COUNTRY_DATA = []
-RESET_CACHE = 0
 
 def clear_cache_thread():
     global CACHE_STATE_DATA, CACHE_COUNTRY_DATA
@@ -18,10 +17,10 @@ def clear_cache_thread():
     CACHE_STATE_DATA = get_state_wise_data_wiki()
     CACHE_COUNTRY_DATA = get_country_wise_data_wiki()
     while True:
-        if reset_cache_timer < 3600: # refresh every one hour, todo: add hardcoded data to config files
+        if reset_cache_timer < 1800: # refresh every one hour, todo: add hardcoded data to config files
             reset_cache_timer += 1
             time.sleep(1)
-        elif reset_cache_timer == 3660:
+        elif reset_cache_timer == 1800:
             logging.info("REFRESHING CACHE")
             reset_cache_timer = 0
             CACHE_STATE_DATA = []
