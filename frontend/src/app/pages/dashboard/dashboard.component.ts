@@ -45,20 +45,19 @@ export class DashboardComponent implements OnInit {
   prepareBarChartData(stateWiseData: any[]) {
     this.statesBarChartData = [{}];
     let active: number[] = [];
-    let cases: number[] = [];
     let deaths: number[] = [];
     let recovered: number[] = [];
 
     stateWiseData.forEach(element => {
-      active.push(element["active"]);
-      cases.push(element["cases"]);
-      deaths.push(element["deaths"]);
-      recovered.push(element["recovered"]);
+      if (String(element["location"]).toLowerCase() != 'total') {
+        active.push(element["active"]);
+        deaths.push(element["deaths"]);
+        recovered.push(element["recovered"]);
+      }
     });
 
     this.statesBarChartData.push(
       { data: active, label: 'Active', stack: 'a' },
-      { data: cases, label: 'Cases', stack: 'a' },
       { data: deaths, label: 'Deaths', stack: 'a' },
       { data: recovered, label: 'Recovered', stack: 'a' }
     );
@@ -81,7 +80,8 @@ export class DashboardComponent implements OnInit {
 
   getStatesNamesFromResponse(stateWiseData: any[]) {
     stateWiseData.forEach(element => {
-      this.states.push(element["location"]);
+      if (String(element["location"]).toLowerCase() != 'total')
+        this.states.push(element["location"]);
     });
   }
 

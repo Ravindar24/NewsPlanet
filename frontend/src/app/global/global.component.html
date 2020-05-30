@@ -148,6 +148,21 @@
   </div>
 </div>
 
+<div class="row" *ngIf="pieChartData">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <div style="display: block;">
+          <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+            [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -155,7 +170,7 @@
         <h4 class="card-title">All Countries</h4>
       </div>
       <div class="card-body">
-        <div>
+        <div *ngIf="countryWiseData">
           <table datatable class="row-border hover">
             <thead>
               <tr>
@@ -180,28 +195,3 @@
   </div>
 
 </div>
-
-<div class="row">
-  <div class="col-md-4">
-    <div class="card ">
-      <div class="card-header ">
-        <h5 class="card-title">Covid Statistics</h5>
-        <p class="card-category">Cases till today</p>
-      </div>
-      <div class="card-body ">
-        <canvas id="globalCovidChart"></canvas>
-      </div>
-      <div class="card-footer ">
-        <div class="legend">
-          <i class="fa fa-circle text-primary"></i> Confirmed
-          <i class="fa fa-circle text-success"></i> Recovered
-          <i class="fa fa-circle text-danger"></i> Deaths
-          <i class="fa fa-circle text-warning"></i> Active Cases
-        </div>
-        <!-- <hr> -->
-        <!-- <div class="stats">
-          <i class="fa fa-calendar"></i> Number of emails sent
-        </div> -->
-      </div>
-    </div>
-  </div>
