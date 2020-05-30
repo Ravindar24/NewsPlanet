@@ -5,6 +5,7 @@ from threading import Thread
 import time
 import pandas as pd
 from newsapp.endpoints import INDIA_STATE_WISE_URL,API_KEY_HEADERS,INDIA_COVID_HISTORY_URL, STATE_URL, COUNTRIES_URL
+import re
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 CACHE_STATE_DATA = []
@@ -62,6 +63,7 @@ def get_state_wise_data_wiki():
         table.columns = ["location", "cases", "deaths", "recovered", "active"]
         state_data = table.to_dict('records')
         logging.info(f" India Example - {state_data[0]}")
+        state_data = clean_json_data(state_data)
         CACHE_STATE_DATA = state_data
         return state_data
         # {'location': 'Andaman and Nicobar Islands', 'cases': '33', 'deaths': '0', 'recovered': '33', 'active': '0'}
@@ -80,11 +82,22 @@ def get_country_wise_data_wiki():
         world_table.columns = ["location", "cases", "deaths", "recovered"]
         world_table_data =  world_table.to_dict(orient = 'records')
         logging.info(f"Countries Example - {world_table_data[0]}")
+        world_table_data = clean_json_data(world_table_data)
         CACHE_COUNTRY_DATA = world_table_data
         return world_table_data
     except Exception as ex:
         logging.Exception("Exception in Country Wise Wiki API")
         return {"ERROR": "Problem with Country Wise Wiki API"}
+
+def clean_json_data(data):
+    """Removes Special Characters and Ablphabets from numbers"""
+    for entry in data:
+        entry['cases'] = re.sub('[^0-9]+', '',entry['cases'])
+        entry['deaths'] = re.sub('[^0-9]+', '',entry['deaths'])
+        entry['recovered'] = re.sub('[^0-9]+', '',entry['recovered'])
+        if entry.get("active", None):  # Active not in Global
+            entry["active"] = re.sub('[^0-9]+', '',entry.get("active", ""))
+    return data
 
 # to do, place this at apt place
 t1 = Thread(target = clear_cache_thread)
