@@ -14,12 +14,15 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { NotificationsComponent } from '../../pages/notifications/notifications.component';
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 import { GlobalComponent } from '../../global/global.component';
-
+import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
+    DataTablesModule,
+    ChartsModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     NgbModule

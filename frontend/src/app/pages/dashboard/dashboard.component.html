@@ -156,12 +156,15 @@
         <h4 class="card-title"> Indian States</h4>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th *ngFor="let header of tableHeaders">
-                {{header}}
-              </th>
+        <div><br>
+          <table datatable class="row-border hover">
+
+            <thead>
+              <tr>
+                <th *ngFor="let header of tableHeaders">
+                  {{header}}
+                </th>
+              </tr>
             </thead>
             <tbody>
               <tr *ngFor="let statedata of stateWiseData; index as i">
@@ -200,49 +203,17 @@
     </div>
   </div>
 </div> -->
-<div class="row">
-  <div class="col-md-4">
+<div class="row" *ngIf="statesBarChartData.length > 2">
+  <div class="col-md-12">
     <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Covid Statistics</h5>
-        <p class="card-category">Cases till today</p>
-      </div>
-      <div class="card-body ">
-        <canvas id="chartEmail"></canvas>
-      </div>
-      <div class="card-footer">
-        <div class="legend">
-          <i class="fa fa-circle text-primary"></i> Confirmed
-          <i class="fa fa-circle text-success"></i> Recovered
-          <i class="fa fa-circle text-danger"></i> Deaths
-          <i class="fa fa-circle text-warning"></i> Active Cases
-        </div>
-        <!-- <hr> -->
-        <!-- <div class="stats">
-          <i class="fa fa-calendar"></i> Number of emails sent
-        </div> -->
-      </div>
-    </div>
-  </div>
-  <!-- <div class="col-md-8">
-    <div class="card card-chart">
-      <div class="card-header">
-        <h5 class="card-title">NASDAQ: AAPL</h5>
-        <p class="card-category">Line Chart with Points</p>
-      </div>
       <div class="card-body">
-        <canvas id="speedChart" width="400" height="100"></canvas>
-      </div>
-      <div class="card-footer">
-        <div class="chart-legend">
-          <i class="fa fa-circle text-info"></i> Tesla Model S
-          <i class="fa fa-circle text-warning"></i> BMW 5 Series
-        </div>
-        <hr />
-        <div class="card-stats">
-          <i class="fa fa-check"></i> Data information certified
+        <div style="display: block;">
+          <canvas baseChart [datasets]="statesBarChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas>
         </div>
       </div>
     </div>
-  </div> -->
+
+  </div>
 </div>

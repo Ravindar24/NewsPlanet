@@ -155,12 +155,14 @@
         <h4 class="card-title">All Countries</h4>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table">
-            <thead class=" text-primary">
-              <th *ngFor="let header of tableHeaders">
-                {{header}}
-              </th>
+        <div>
+          <table datatable class="row-border hover">
+            <thead>
+              <tr>
+                <th *ngFor="let header of tableHeaders">
+                  {{header}}
+                </th>
+              </tr>
             </thead>
             <tbody>
               <tr *ngFor="let condata of countryWiseData; index as i">
