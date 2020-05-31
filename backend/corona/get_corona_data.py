@@ -68,7 +68,7 @@ def get_state_wise_data_wiki():
         return state_data
         # {'location': 'Andaman and Nicobar Islands', 'cases': '33', 'deaths': '0', 'recovered': '33', 'active': '0'}
     except Exception as ex:
-        logging.Exception("Exception in State Wise Wiki API")
+        logging.error("Exception in Country Wise Wiki API--->",ex)
         return {"ERROR": "Problem with API"}
 
 def get_country_wise_data_wiki():
@@ -86,7 +86,7 @@ def get_country_wise_data_wiki():
         CACHE_COUNTRY_DATA = world_table_data
         return world_table_data
     except Exception as ex:
-        logging.Exception("Exception in Country Wise Wiki API")
+        logging.error("Exception in Country Wise Wiki API--->",ex)
         return {"ERROR": "Problem with Country Wise Wiki API"}
 
 def clean_json_data(data):
