@@ -58,7 +58,7 @@ def get_state_wise_data_wiki():
         if CACHE_STATE_DATA:
             logging.info("FETCHING FROM CACHED DATA")
             return CACHE_STATE_DATA
-        table = pd.read_html(STATE_URL)[5][3:40]
+        table = pd.read_html(STATE_URL)[7][3:40]
         table = table[[1,2,3,4,5]]
         table.columns = ["location", "cases", "deaths", "recovered", "active"]
         state_data = table.to_dict('records')
@@ -68,7 +68,7 @@ def get_state_wise_data_wiki():
         return state_data
         # {'location': 'Andaman and Nicobar Islands', 'cases': '33', 'deaths': '0', 'recovered': '33', 'active': '0'}
     except Exception as ex:
-        logging.error("Exception in Country Wise Wiki API--->",ex)
+        logging.error("Exception in State Wise Wiki API--->",ex)
         return {"ERROR": "Problem with API"}
 
 def get_country_wise_data_wiki():
