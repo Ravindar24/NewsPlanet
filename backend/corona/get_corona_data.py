@@ -6,10 +6,12 @@ import time
 import pandas as pd
 from newsapp.endpoints import INDIA_STATE_WISE_URL,API_KEY_HEADERS,INDIA_COVID_HISTORY_URL, STATE_URL, COUNTRIES_URL
 import re
+from covid import Covid
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 CACHE_STATE_DATA = []
 CACHE_COUNTRY_DATA = []
+covid = Covid(source="worldometers")
 
 def clear_cache_thread():
     global CACHE_STATE_DATA, CACHE_COUNTRY_DATA
@@ -58,20 +60,24 @@ def get_state_wise_data_wiki():
         if CACHE_STATE_DATA:
             logging.info("FETCHING FROM CACHED DATA")
             return CACHE_STATE_DATA
-        table = pd.read_html(STATE_URL)[7][3:40]
-        table = table[[1,2,3,4,5]]
-        table.columns = ["location", "cases", "deaths", "recovered", "active"]
-        state_data = table.to_dict('records')
-        logging.info(f" India Example - {state_data[0]}")
-        state_data = clean_json_data(state_data)
-        CACHE_STATE_DATA = state_data
-        return state_data
+        table = pd.read_html(STATE_URL)
+        for idx in range(20):
+            real_table = table[idx].columns[0:1][0:1]
+            if len(real_table) > 0 and "vte COVID-19 pandemic in India by state and union territory" in real_table:  # finding the  statwise table
+                table = table[idx][0:37]
+                table.columns = ["S.No","location", "cases", "deaths", "recovered", "active"]
+                state_data = table.to_dict('records')
+                logging.info(f" India Example - {state_data[0]}")
+                state_data = clean_json_data(state_data)
+                CACHE_STATE_DATA = state_data
+                return state_data
+        return {"ERROR": "Couldn't find data in Wiki Tables"}
         # {'location': 'Andaman and Nicobar Islands', 'cases': '33', 'deaths': '0', 'recovered': '33', 'active': '0'}
     except Exception as ex:
         logging.error("Exception in State Wise Wiki API--->",ex)
         return {"ERROR": "Problem with API"}
 
-def get_country_wise_data_wiki():
+def get_country_wise_data_wiki_archived():
     global CACHE_COUNTRY_DATA
     try:
         if CACHE_COUNTRY_DATA:
@@ -85,6 +91,24 @@ def get_country_wise_data_wiki():
         world_table_data = clean_json_data(world_table_data)
         CACHE_COUNTRY_DATA = world_table_data
         return world_table_data
+    except Exception as ex:
+        logging.error("Exception in Country Wise Wiki API--->",ex)
+        return {"ERROR": "Problem with Country Wise Wiki API"}
+
+def get_country_wise_data_wiki():
+    global CACHE_COUNTRY_DATA
+    try:
+        if CACHE_COUNTRY_DATA:
+            logging.info("FETCHING FROM CACHED DATA")
+            return CACHE_COUNTRY_DATA
+        country_data = []
+        data = covid.get_data() # Decimal values causing issues, taking only required data
+        for country in data:
+            if not country['country'].isdigit():
+                country_data.append({"location":country["country"],"cases":country["confirmed"],"recovered":country["recovered"],"deaths":country["deaths"]})
+        CACHE_COUNTRY_DATA = country_data
+        return country_data
+        # ["country", "confirmed", "deaths", "recovered", "active"]
     except Exception as ex:
         logging.error("Exception in Country Wise Wiki API--->",ex)
         return {"ERROR": "Problem with Country Wise Wiki API"}
