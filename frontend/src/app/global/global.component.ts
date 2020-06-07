@@ -11,7 +11,6 @@ import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsToolt
 export class GlobalComponent implements OnInit {
   isFetchingCountrySummaryData = false;
   countrySummary;
-  activeCases;
   public canvas: any;
   public ctx;
   public globalCovidChart;
@@ -46,8 +45,7 @@ export class GlobalComponent implements OnInit {
       (response) => {
         this.isFetchingCountrySummaryData = false;
         if (response)
-          this.countrySummary = response;
-        this.activeCases = this.countrySummary.TotalConfirmed - (this.countrySummary.TotalDeaths + this.countrySummary.TotalRecovered);
+          this.countrySummary = response["data"];
         this.preparePieDashboard();
 
       },
@@ -57,7 +55,7 @@ export class GlobalComponent implements OnInit {
 
   }
   preparePieDashboard() {
-    this.pieChartData = [this.activeCases, this.countrySummary.TotalRecovered, this.countrySummary.TotalDeaths,];
+    this.pieChartData = [this.countrySummary.ActiveCases, this.countrySummary.TotalRecovered, this.countrySummary.TotalDeaths,];
   }
 
   getCountrywiseDetailedData() {

@@ -9,16 +9,17 @@ import re
 from covid import Covid
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+COUNTRY_SUMMARY = {}
 CACHE_STATE_DATA = []
 CACHE_COUNTRY_DATA = []
 covid = Covid(source="worldometers")
 
 def clear_cache_thread():
-    global CACHE_STATE_DATA, CACHE_COUNTRY_DATA
+    global CACHE_STATE_DATA, CACHE_COUNTRY_DATA, COUNTRY_SUMMARY
     reset_cache_timer = 0
     logging.info("CACHING DATA INITIALLY") 
     CACHE_STATE_DATA = get_state_wise_data_wiki()
-    CACHE_COUNTRY_DATA = get_country_wise_data_wiki()
+    CACHE_COUNTRY_DATA = get_country_wise_data()
     while True:
         if reset_cache_timer < 1800: # refresh every one hour, todo: add hardcoded data to config files
             reset_cache_timer += 1
@@ -26,29 +27,21 @@ def clear_cache_thread():
         elif reset_cache_timer == 1800:
             logging.info("REFRESHING CACHE")
             reset_cache_timer = 0
+            COUNTRY_SUMMARY = {}
             CACHE_STATE_DATA = []
             CACHE_COUNTRY_DATA = []
             CACHE_STATE_DATA = get_state_wise_data_wiki()
             CACHE_COUNTRY_DATA = get_country_wise_data_wiki()
 
-def get_data():
-    try:
-        response = requests.get(INDIA_STATE_WISE_URL,headers = API_KEY_HEADERS)
-        response = response.json()
-        
-        if response["statusCode"] == "200":
-            data = response["response"]
-            data = data[0:len(data)-1]
-            return data
-
-    except requests.RequestException as E:
-        logging.log(str(E))
-        return {"ERROR": "Problem with API"}
-
 def get_corona_history():
     try:
-        response = requests.get(INDIA_COVID_HISTORY_URL)
-        return response.json()
+        # response = requests.get(INDIA_COVID_HISTORY_URL)
+        if CACHE_STATE_DATA:
+            data = CACHE_STATE_DATA[-1]  # last row
+            activeCases = int(data['cases']) - ( int(data["recovered"]) +int(data["deaths"]))
+            return {"Confirmed":data['cases'], "Recovered":data['recovered'],"Deaths":data["deaths"], "Active":str(activeCases)}
+
+        return {"ERROR": "Data not Cached Yet"}
 
     except requests.RequestException as E:
         logging.log(str(E))
@@ -77,26 +70,8 @@ def get_state_wise_data_wiki():
         logging.error("Exception in State Wise Wiki API--->",ex)
         return {"ERROR": "Problem with API"}
 
-def get_country_wise_data_wiki_archived():
-    global CACHE_COUNTRY_DATA
-    try:
-        if CACHE_COUNTRY_DATA:
-            logging.info("FETCHING FROM CACHED DATA")
-            return CACHE_COUNTRY_DATA
-        world_table = pd.read_html(COUNTRIES_URL)[4][0:228]
-        world_table.drop([('Locations[e]', '229'), 'Ref.'], axis = 1, inplace=True)
-        world_table.columns = ["location", "cases", "deaths", "recovered"]
-        world_table_data =  world_table.to_dict(orient = 'records')
-        logging.info(f"Countries Example - {world_table_data[0]}")
-        world_table_data = clean_json_data(world_table_data)
-        CACHE_COUNTRY_DATA = world_table_data
-        return world_table_data
-    except Exception as ex:
-        logging.error("Exception in Country Wise Wiki API--->",ex)
-        return {"ERROR": "Problem with Country Wise Wiki API"}
-
-def get_country_wise_data_wiki():
-    global CACHE_COUNTRY_DATA
+def get_country_wise_data():
+    global CACHE_COUNTRY_DATA, COUNTRY_SUMMARY
     try:
         if CACHE_COUNTRY_DATA:
             logging.info("FETCHING FROM CACHED DATA")
@@ -104,7 +79,9 @@ def get_country_wise_data_wiki():
         country_data = []
         data = covid.get_data() # Decimal values causing issues, taking only required data
         for country in data:
-            if not country['country'].isdigit():
+            if country["country"].lower() == "world":  # for summary data
+                COUNTRY_SUMMARY.update({"TotalConfirmed":country["confirmed"],"TotalRecovered":country["recovered"],"TotalDeaths":country["deaths"], "ActiveCases":country['active']})
+            elif not country['country'].isdigit():
                 country_data.append({"location":country["country"],"cases":country["confirmed"],"recovered":country["recovered"],"deaths":country["deaths"]})
         CACHE_COUNTRY_DATA = country_data
         return country_data
@@ -112,6 +89,15 @@ def get_country_wise_data_wiki():
     except Exception as ex:
         logging.error("Exception in Country Wise Wiki API--->",ex)
         return {"ERROR": "Problem with Country Wise Wiki API"}
+
+def get_country_summary():
+    try:
+        if COUNTRY_SUMMARY:
+            return COUNTRY_SUMMARY
+        return {"ERROR": "Data not Cached Yet"}
+    except requests.RequestException as E:
+        logging.log(str(E))
+        return {"ERROR": "Problem with API"}
 
 def clean_json_data(data):
     """Removes Special Characters and Ablphabets from numbers"""

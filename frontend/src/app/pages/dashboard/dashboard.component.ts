@@ -107,9 +107,8 @@ export class DashboardComponent implements OnInit {
       (response) => {
         this.isFetchingCountryData = false;
         if (response) {
-          this.cummulativeData = response["data"];
-          this.latestData = this.cummulativeData[this.cummulativeData.length - 1]
-          this.activeCases = this.latestData.Confirmed - (this.latestData.Recovered + this.latestData.Deaths)
+          this.latestData = response["data"];
+          // this.activeCases = this.latestData.Confirmed - (this.latestData.Recovered + this.latestData.Deaths)
         }
       },
       (err) => {
