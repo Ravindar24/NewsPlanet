@@ -4,7 +4,7 @@ import sys
 from threading import Thread
 import time
 import pandas as pd
-from newsapp.endpoints import INDIA_STATE_WISE_URL,API_KEY_HEADERS,INDIA_COVID_HISTORY_URL, STATE_URL, COUNTRIES_URL
+from corona.corona_api_urls import INDIA_STATE_WISE_URL,API_KEY_HEADERS,INDIA_COVID_HISTORY_URL, STATE_URL, COUNTRIES_URL
 import re
 from covid import Covid
 
@@ -110,6 +110,6 @@ def clean_json_data(data):
     return data
 
 # to do, place this at apt place
-t1 = Thread(target = clear_cache_thread)
-logging.info("STARTING THREAD") 
-t1.start()
+# t1 = Thread(target = clear_cache_thread)
+# logging.info("STARTING THREAD") 
+# t1.start()
