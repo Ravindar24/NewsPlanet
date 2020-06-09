@@ -109,7 +109,3 @@ def clean_json_data(data):
             entry["active"] = re.sub('[^0-9]+', '',entry.get("active", ""))
     return data
 
-# to do, place this at apt place
-# t1 = Thread(target = clear_cache_thread)
-# logging.info("STARTING THREAD") 
-# t1.start()
