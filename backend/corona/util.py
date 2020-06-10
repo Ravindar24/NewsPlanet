@@ -108,3 +108,9 @@ def clean_json_data(data):
         if entry.get("active", None):  # Active not in Global
             entry["active"] = re.sub('[^0-9]+', '',entry.get("active", ""))
     return data
+
+def get_email_data():
+    if CACHE_STATE_DATA and COUNTRY_SUMMARY:
+        return [CACHE_STATE_DATA[-1]], [COUNTRY_SUMMARY]
+    else:
+        return None, None

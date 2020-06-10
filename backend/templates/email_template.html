@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <style> 
+        table, th, td { 
+            border: 1px solid black; 
+            border-collapse: collapse; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <p>Dear Subscribers,</p>
+    <br>
+    <p>Greeting from Team NewsPlanet, Below are the latest covid-19 updates</p>
+    
+    <br>
+    <br>
+    <b>Covid-19 India Summary</b>
+    <table style="width:75%"> 
+        <tr> 
+            <th>Total Cases</th> 
+            <th>Recovered</th> 
+            <th>Deaths</th> 
+            <th>Active</th> 
+        </tr> 
+        {% for item in india_data %}
+        <tr> 
+            <td>{{item.cases}}</td> 
+            <td>{{item.recovered}}</td> 
+            <td>{{item.deaths}}</td> 
+            <td>{{item.active}}</td> 
+        </tr> 
+        {% endfor %}
+    </table> 
+    <br>
+    <b>Covid-19 Global Summary</b>
+    <table style="width:75%"> 
+        <tr> 
+            <th>Total Cases</th> 
+            <th>Recovered</th> 
+            <th>Deaths</th> 
+            <th>Active</th> 
+        </tr> 
+        {% for item in country_data %}
+        <tr> 
+            <td>{{item.TotalConfirmed}}</td> 
+            <td>{{item.TotalRecovered}}</td> 
+            <td>{{item.TotalDeaths}}</td> 
+            <td>{{item.ActiveCases}}</td> 
+        </tr> 
+        {% endfor %}
+    </table>
+
+    <br>
+    <p>Regards,</p>
+    <p>Team News Planet.</p>
+</body>
+
+</html>
