@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import request, render_template
 from corona.util import get_corona_history, get_state_wise_data_wiki, get_country_wise_data, get_country_summary, get_email_data
-from __init__ import mail
+from corona import mail
 from flask_mail import Message
 
 corona = Blueprint('corona', __name__)
