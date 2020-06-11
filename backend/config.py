@@ -15,4 +15,7 @@ class Config:
     MAIL_MAX_EMAILS =  None # prevent one mail call from sending too many emails
     # MAIL_SUPPRESS_SEND =  None # similar to debug...here its app[TESTING] = True
     MAIL_ASCII_ATTACHMENTS = False # File names to ASCII
+
+    # DATEBASE
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db' # /// means realtive path from current file
     
