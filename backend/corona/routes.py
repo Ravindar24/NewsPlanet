@@ -1,8 +1,10 @@
 from flask import Blueprint
 from flask import request, render_template
 from corona.util import get_corona_history, get_state_wise_data_wiki, get_country_wise_data, get_country_summary, get_email_data
-from corona import mail
+from corona import mail, db
+from corona.models import User
 from flask_mail import Message
+from corona.forms import SubscriptionForm
 
 corona = Blueprint('corona', __name__)
 
@@ -42,3 +44,22 @@ def send_email():
     except Exception as ex:
         print("MAIL EXCEPTION",ex)
         return {"Result":"MAIL ERROR"}
+
+@corona.route("/subscribe", methods=["POST"])
+def subscribe():
+    try:
+        form = SubscriptionForm()
+        if form.validate_on_submit():
+            email = form.email.data
+            if email and not User.query.filter_by(email=email).first(): # duplicate emails
+                user = User(email=email)
+                db.session.add(user)
+                db.session.commit()
+                print(f"Data in dB {User.query.all()}")
+                return ({"data" : "Email Added Successfully"})
+            else:
+                return ({"data" : "Incorrect Email or Email Alreay Exists"})
+        return ({"data" : "Form is not valid"})
+    except Exception as ex:
+        print("FORM EXCEPTION",ex)
+        return ({"data" : "Exception while submitting the form"})

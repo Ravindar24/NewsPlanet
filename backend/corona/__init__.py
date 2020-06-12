@@ -6,10 +6,12 @@ from threading import Thread
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
+
 # extensions
 cors = CORS()
 mail = Mail()
 db = SQLAlchemy()
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -20,7 +22,7 @@ def create_app(config_class=Config):
     cors.init_app(app)
     mail.init_app(app)
     db.init_app(app)
-    
+
     # Add blueprints here
     from corona.routes import corona
     app.register_blueprint(corona)
@@ -28,7 +30,7 @@ def create_app(config_class=Config):
 
     # THREADS HERE
     cache_thread = Thread(target=clear_cache_thread, daemon=True)
-    # cache_thread.start()
+    cache_thread.start()
 
     # inorder to use this app at different places, use current app
     # from flask import current_app

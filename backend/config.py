@@ -2,6 +2,8 @@ import os
 
 class Config:
     # Add configurations here
+
+    SECRET_KEY = os.environ.get('SECRET_KEY', "0d1660c5e02d7ff471035863f69bb793") # for forms, prventing cross site attacks etc
     # SQL_DB_URI = "sqlite:///site.db" OR os.environ.get('')
     MAIL_SERVER = os.environ.get('MAIL_SERVER', "")  # server of our email ID
     MAIL_PORT = int(os.environ.get('MAIL_PORT', ""))
