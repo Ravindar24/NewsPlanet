@@ -10,6 +10,7 @@ from covid import Covid
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 COUNTRY_SUMMARY = {}
+STATE_SUMMARY = {}
 CACHE_STATE_DATA = []
 CACHE_COUNTRY_DATA = []
 covid = Covid(source="worldometers")
@@ -36,10 +37,8 @@ def clear_cache_thread():
 def get_corona_history():
     try:
         # response = requests.get(INDIA_COVID_HISTORY_URL)
-        if CACHE_STATE_DATA:
-            data = CACHE_STATE_DATA[-1]  # last row
-            activeCases = int(data['cases']) - ( int(data["recovered"]) +int(data["deaths"]))
-            return {"Confirmed":data['cases'], "Recovered":data['recovered'],"Deaths":data["deaths"], "Active":str(activeCases)}
+        if CACHE_STATE_DATA or STATE_SUMMARY:
+            return {"Confirmed":STATE_SUMMARY['cases'], "Recovered":STATE_SUMMARY['recovered'],"Deaths":STATE_SUMMARY["deaths"], "Active":STATE_SUMMARY["active"]}
 
         return {"ERROR": "Data not Cached Yet"}
 
@@ -48,7 +47,7 @@ def get_corona_history():
         return {"ERROR": "Problem with API"}
 
 def get_state_wise_data_wiki():
-    global CACHE_STATE_DATA
+    global CACHE_STATE_DATA, STATE_SUMMARY
     try:
         if CACHE_STATE_DATA:
             logging.info("FETCHING FROM CACHED DATA")
@@ -57,6 +56,8 @@ def get_state_wise_data_wiki():
         table = table[0][0:37]
         table.columns = ["S.No","location", "active", "recovered", "deaths", "cases"]
         state_data = table.to_dict('records')
+        STATE_SUMMARY = state_data[-1]
+        state_data = state_data[0:35]
         logging.info(f" India Example - {state_data[0]}")
         # state_data = clean_json_data(state_data)
         CACHE_STATE_DATA = state_data
