@@ -53,17 +53,14 @@ def get_state_wise_data_wiki():
         if CACHE_STATE_DATA:
             logging.info("FETCHING FROM CACHED DATA")
             return CACHE_STATE_DATA
-        table = pd.read_html(STATE_URL)
-        for idx in range(20):
-            real_table = table[idx].columns[0:1][0:1]
-            if len(real_table) > 0 and "vte COVID-19 pandemic in India by state and union territory" in real_table:  # finding the  statwise table
-                table = table[idx][0:37]
-                table.columns = ["S.No","location", "cases", "deaths", "recovered", "active"]
-                state_data = table.to_dict('records')
-                logging.info(f" India Example - {state_data[0]}")
-                state_data = clean_json_data(state_data)
-                CACHE_STATE_DATA = state_data
-                return state_data
+        table = pd.read_html(STATE_URL, match = re.compile(r".*Total Confirmed cases.*"))
+        table = table[0][0:37]
+        table.columns = ["S.No","location", "active", "recovered", "deaths", "cases"]
+        state_data = table.to_dict('records')
+        logging.info(f" India Example - {state_data[0]}")
+        # state_data = clean_json_data(state_data)
+        CACHE_STATE_DATA = state_data
+        return state_data
         return {"ERROR": "Couldn't find data in Wiki Tables"}
         # {'location': 'Andaman and Nicobar Islands', 'cases': '33', 'deaths': '0', 'recovered': '33', 'active': '0'}
     except Exception as ex:
