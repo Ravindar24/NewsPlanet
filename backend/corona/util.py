@@ -29,10 +29,11 @@ def clear_cache_thread():
             logging.info("REFRESHING CACHE")
             reset_cache_timer = 0
             COUNTRY_SUMMARY = {}
+            STATE_SUMMARY = {}
             CACHE_STATE_DATA = []
             CACHE_COUNTRY_DATA = []
             CACHE_STATE_DATA = get_state_wise_data_wiki()
-            CACHE_COUNTRY_DATA = get_country_wise_data_wiki()
+            CACHE_COUNTRY_DATA = get_country_wise_data()
 
 def get_corona_history():
     try:
