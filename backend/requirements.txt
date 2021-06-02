@@ -8,5 +8,5 @@ covid==2.2.10
 Jinja2==2.11.1
 pandas==1.0.1
 requests==2.22.0
-urllib3==1.25.3
+urllib3==1.26.5
 email-validator==1.1.1
